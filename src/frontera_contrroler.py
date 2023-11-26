@@ -2,7 +2,6 @@ from src.classes.Pais import Pais
 from src.classes.Frontera import Frontera
 from src.conf import myDB
 from typing import List
-import json
 
 class FronteraController:
     @staticmethod

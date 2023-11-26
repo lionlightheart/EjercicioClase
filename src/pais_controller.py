@@ -25,7 +25,6 @@ class PaisController:
                            pais['latlng'][1],
                            frontera
                            )
-            print(paisObj)
             paisesObj.append(paisObj)
         return paisesObj
     
