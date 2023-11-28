@@ -23,12 +23,15 @@ class Main:
             elif opcion == "3":
                 self.buscar_pais()
             elif opcion == "4":
+                self.buscar_pais_con_frontera()
+            elif opcion == "5":
                 menuBucle = True
             else:
                 print("Opcion invalida")
     
     
     def recargar_tiempo(self):
+        os.system("cls")
         print("Recargando tiempo")
         temps = temp_controller.generate_temperatura_obj_arr()
         temp_controller.add_to_db(temps)
@@ -80,7 +83,44 @@ class Main:
             print(f"Atardecer: {pais[8]}")
             print("------------------------------------------------------")
         input("Presione cualquier tecla para continuar")
-        
+    
+    def buscar_pais_con_frontera(self):
+        os.system("cls")
+        pais = input("Ingrese el nombre del pais: ")
+        os.system("cls")
+        print("----------------------------------------------")
+        cursor = myDB.cursor()
+        cursor.execute("select \
+                distinct p.nombre,\
+                t.timestamp,\
+                t.temperatura,\
+                t.sensacion,\
+                t.minima,\
+                t.maxima,\
+                t.humedad,\
+                t.amanecer,\
+                t.atardecer\
+                FROM\
+                    temperaturas t JOIN \
+                    paises p ON t.idpais = p.idpais\
+                JOIN \
+                    fronteras f ON t.idpais = f.idfronteras OR t.idpais = f.idpais\
+                WHERE \
+                    p.nombre = %s OR f.idpais = (SELECT idpais FROM paises WHERE UPPER(nombre) = UPPER(%s));", (pais,pais))
+        resultado = cursor.fetchall()
+        cursor.close()
+        for pais in resultado:
+            print(f"Nombre: {pais[0]}")
+            print(f"Fecha: {pais[1]}")
+            print(f"Temperatura: {pais[2]}")
+            print(f"Sensacion: {pais[3]}")
+            print(f"Minima: {pais[4]}")
+            print(f"Maxima: {pais[5]}")
+            print(f"Humedad: {pais[6]}")
+            print(f"Amanecer: {pais[7]}")
+            print(f"Atardecer: {pais[8]}")
+            print("------------------------------------------------------")
+        input("Presione cualquier tecla para continuar")
     
     def cargar_datos(self):
         try:
@@ -101,7 +141,8 @@ class Main:
         print("| 1. recargar tiempo                 |")
         print("| 2. mostrar paises                  |")
         print("| 3. buscar un pais                  |")
-        print("| 4. salir                           |")
+        print("| 4. buscar un pais con frontera     |")
+        print("| 5. salir                           |")
         print("+------------------------------------+")
     
 

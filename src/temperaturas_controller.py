@@ -1,7 +1,8 @@
 import requests
 from src.conf import myDB
 from src.classes.temperaturas import Temperatura
-
+from tqdm import tqdm
+import time
 class Temperatura_controller:
     @staticmethod
     def get_pais_lat_long():
@@ -28,7 +29,7 @@ class Temperatura_controller:
     def generate_temperatura_obj_arr():
         pais_arr = Temperatura_controller.get_pais_lat_long()
         tiempo_arr = []
-        for pais in pais_arr:
+        for pais in tqdm(pais_arr, desc="Obteniendo temperaturas", unit="iter", bar_format="{l_bar}{bar} [ time left: {remaining} ]"):
             temperatura = Temperatura_controller.get_temperatura_api(pais[1], pais[2])
             tem_pais_obj = Temperatura(pais[0],
                                        temperatura["current"]["temp"],
