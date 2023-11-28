@@ -1,0 +1,7 @@
+para inicializar la aplicacion se tendra que importar un entorno virtual con la versionde python 3.11.6
+la base de datos tambiense deberá de generar, el archivo para importar las tablas estan en  db
+la configuraciond e la base de datos esta en src > conf.py
+
+No hay mucho que contar 
+
+tarda un poco al abrir, porque esta cargando datos
